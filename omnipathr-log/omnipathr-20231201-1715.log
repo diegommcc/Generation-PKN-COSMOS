@@ -1,0 +1,24 @@
+[2023-12-01 17:15:07] [INFO]    [OmnipathR] Welcome to OmnipathR!
+[2023-12-01 17:15:07] [TRACE]   [OmnipathR] Reading JSON from `/home/dmananesc/.cache/OmnipathR/cache.json` (encoding: UTF-8).
+[2023-12-01 17:15:07] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2023-12-01 17:15:07] [INFO]    [OmnipathR] Initialized cache: `/home/dmananesc/.cache/OmnipathR`.
+[2023-12-01 17:15:07] [TRACE]   [OmnipathR] Reading JSON from `/home/dmananesc/R/x86_64-pc-linux-gnu-library/4.3/OmnipathR/db/db_def.json` (encoding: UTF-8).
+[2023-12-01 17:15:07] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2023-12-01 17:15:07] [TRACE]   [OmnipathR] Reading JSON from `/home/dmananesc/R/x86_64-pc-linux-gnu-library/4.3/OmnipathR/internal/magic_bytes.json` (encoding: UTF-8).
+[2023-12-01 17:15:07] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2023-12-01 17:15:07] [TRACE]   [OmnipathR] Reading JSON from `/home/dmananesc/R/x86_64-pc-linux-gnu-library/4.3/OmnipathR/internal/urls.json` (encoding: UTF-8).
+[2023-12-01 17:15:07] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2023-12-01 17:15:07] [TRACE]   [OmnipathR] Reading JSON from `/home/dmananesc/R/x86_64-pc-linux-gnu-library/4.3/OmnipathR/internal/id_types.json` (encoding: UTF-8).
+[2023-12-01 17:15:07] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2023-12-01 17:15:12] [INFO]    [OmnipathR] Welcome to OmnipathR!
+[2023-12-01 17:15:12] [TRACE]   [OmnipathR] Reading JSON from `/home/dmananesc/.cache/OmnipathR/cache.json` (encoding: UTF-8).
+[2023-12-01 17:15:12] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2023-12-01 17:15:12] [INFO]    [OmnipathR] Initialized cache: `/home/dmananesc/.cache/OmnipathR`.
+[2023-12-01 17:15:12] [TRACE]   [OmnipathR] Reading JSON from `/home/dmananesc/R/x86_64-pc-linux-gnu-library/4.3/OmnipathR/db/db_def.json` (encoding: UTF-8).
+[2023-12-01 17:15:12] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2023-12-01 17:15:13] [TRACE]   [OmnipathR] Reading JSON from `/home/dmananesc/R/x86_64-pc-linux-gnu-library/4.3/OmnipathR/internal/magic_bytes.json` (encoding: UTF-8).
+[2023-12-01 17:15:13] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2023-12-01 17:15:13] [TRACE]   [OmnipathR] Reading JSON from `/home/dmananesc/R/x86_64-pc-linux-gnu-library/4.3/OmnipathR/internal/urls.json` (encoding: UTF-8).
+[2023-12-01 17:15:13] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2023-12-01 17:15:13] [TRACE]   [OmnipathR] Reading JSON from `/home/dmananesc/R/x86_64-pc-linux-gnu-library/4.3/OmnipathR/internal/id_types.json` (encoding: UTF-8).
+[2023-12-01 17:15:13] [TRACE]   [OmnipathR] JSON validation successful: TRUE

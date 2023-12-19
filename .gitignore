@@ -1,0 +1,7 @@
+*v5.0.tsv
+Generation-PKN-COSMOS.Rproj
+*.Rproject
+*.Rhistory
+.Rproj.user
+.Rproj
+.RData

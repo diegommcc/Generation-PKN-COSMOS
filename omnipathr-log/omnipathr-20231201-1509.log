@@ -1,0 +1,74 @@
+[2023-12-01 15:09:00] [INFO]    [OmnipathR] Welcome to OmnipathR!
+[2023-12-01 15:09:00] [TRACE]   [OmnipathR] Reading JSON from `/home/dmananesc/.cache/OmnipathR/cache.json` (encoding: UTF-8).
+[2023-12-01 15:09:00] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2023-12-01 15:09:00] [INFO]    [OmnipathR] Initialized cache: `/home/dmananesc/.cache/OmnipathR`.
+[2023-12-01 15:09:00] [TRACE]   [OmnipathR] Reading JSON from `/home/dmananesc/R/x86_64-pc-linux-gnu-library/4.3/OmnipathR/db/db_def.json` (encoding: UTF-8).
+[2023-12-01 15:09:00] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2023-12-01 15:09:00] [TRACE]   [OmnipathR] Reading JSON from `/home/dmananesc/R/x86_64-pc-linux-gnu-library/4.3/OmnipathR/internal/magic_bytes.json` (encoding: UTF-8).
+[2023-12-01 15:09:00] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2023-12-01 15:09:00] [TRACE]   [OmnipathR] Reading JSON from `/home/dmananesc/R/x86_64-pc-linux-gnu-library/4.3/OmnipathR/internal/urls.json` (encoding: UTF-8).
+[2023-12-01 15:09:00] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2023-12-01 15:09:00] [TRACE]   [OmnipathR] Reading JSON from `/home/dmananesc/R/x86_64-pc-linux-gnu-library/4.3/OmnipathR/internal/id_types.json` (encoding: UTF-8).
+[2023-12-01 15:09:00] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2023-12-01 15:09:02] [INFO]    [OmnipathR] Welcome to OmnipathR!
+[2023-12-01 15:09:02] [TRACE]   [OmnipathR] Reading JSON from `/home/dmananesc/.cache/OmnipathR/cache.json` (encoding: UTF-8).
+[2023-12-01 15:09:02] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2023-12-01 15:09:02] [INFO]    [OmnipathR] Initialized cache: `/home/dmananesc/.cache/OmnipathR`.
+[2023-12-01 15:09:02] [TRACE]   [OmnipathR] Reading JSON from `/home/dmananesc/R/x86_64-pc-linux-gnu-library/4.3/OmnipathR/db/db_def.json` (encoding: UTF-8).
+[2023-12-01 15:09:02] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2023-12-01 15:09:02] [TRACE]   [OmnipathR] Reading JSON from `/home/dmananesc/R/x86_64-pc-linux-gnu-library/4.3/OmnipathR/internal/magic_bytes.json` (encoding: UTF-8).
+[2023-12-01 15:09:02] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2023-12-01 15:09:02] [TRACE]   [OmnipathR] Reading JSON from `/home/dmananesc/R/x86_64-pc-linux-gnu-library/4.3/OmnipathR/internal/urls.json` (encoding: UTF-8).
+[2023-12-01 15:09:02] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2023-12-01 15:09:02] [TRACE]   [OmnipathR] Reading JSON from `/home/dmananesc/R/x86_64-pc-linux-gnu-library/4.3/OmnipathR/internal/id_types.json` (encoding: UTF-8).
+[2023-12-01 15:09:02] [TRACE]   [OmnipathR] JSON validation successful: TRUE
+[2023-12-01 15:13:04] [INFO]    [OmnipathR] Loading database `Ensembl and OMA organism names`.
+[2023-12-01 15:13:04] [INFO]    [OmnipathR] Looking up in cache `https://www.ensembl.org/info/about/species.html`: key=7332486db7400730697234bad76ca0c8e4d00799, latest version=1.
+[2023-12-01 15:13:04] [TRACE]   [OmnipathR] Cache file path: /home/dmananesc/.cache/OmnipathR/7332486db7400730697234bad76ca0c8e4d00799-1.html
+[2023-12-01 15:13:04] [TRACE]   [OmnipathR] Looking up in cache: `https://omabrowser.org/All/oma-species.txt`.
+[2023-12-01 15:13:04] [TRACE]   [OmnipathR] Loaded data from RDS `/home/dmananesc/.cache/OmnipathR/30e690cbb55dfc63b5903ab337f34ffc2f4be397-1.rds`.
+[2023-12-01 15:13:04] [INFO]    [OmnipathR] Loaded database `Ensembl and OMA organism names`.
+[2023-12-01 15:13:04] [TRACE]   [OmnipathR] BioMart query: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Query>
+<Query  virtualSchemaName="default" formatter="TSV" header="0" uniqueRows="0" count="" datasetConfigVersion="0.6" completionStamp="1" >
+    <Dataset name="hsapiens_gene_ensembl" interface="default" >
+        <Attribute name="ensembl_peptide_id"/>
+        <Attribute name="ensembl_gene_id"/>
+        <Attribute name="external_gene_name"/>
+    </Dataset>
+</Query>
+[2023-12-01 15:13:04] [TRACE]   [OmnipathR] Looking up in cache: `http://www.ensembl.org/biomart/martservice?query=%3C?xml%20version=%221.0%22%20encoding=%22UTF-8%22?%3E%0A%3C!DOCTYPE%20Query%3E%0A%3CQuery%20%20virtualSchemaName=%22default%22%20formatter=%22TSV%22%20header=%220%22%20uniqueRows=%220%22%20count=%22%22%20datasetConfigVersion=%220.6%22%20completionStamp=%221%22%20%3E%0A%20%20%20%20%3CDataset%20name=%22hsapiens_gene_ensembl%22%20interface=%22default%22%20%3E%0A%20%20%20%20%20%20%20%20%3CAttribute%20name=%22ensembl_peptide_id%22/%3E%0A%20%20%20%20%20%20%20%20%3CAttribute%20name=%22ensembl_gene_id%22/%3E%0A%20%20%20%20%20%20%20%20%3CAttribute%20name=%22external_gene_name%22/%3E%0A%20%20%20%20%3C/Dataset%3E%0A%3C/Query%3E%0A`.
+[2023-12-01 15:13:05] [TRACE]   [OmnipathR] Loaded data from RDS `/home/dmananesc/.cache/OmnipathR/e874bc2d349448f4f9ce16f47b9a698d692bb046-1.rds`.
+[2023-12-01 15:13:05] [SUCCESS] [OmnipathR] www.ensembl.org: loaded 276950 records from cache
+[2023-12-01 15:13:05] [TRACE]   [OmnipathR] Looking up in cache: `https://omnipathdb.org/interactions?genesymbols=yes&datasets=omnipath&organisms=9606&fields=sources,references,curation_effort&license=academic`
+[2023-12-01 15:13:05] [TRACE]   [OmnipathR] Loaded data from RDS `/home/dmananesc/.cache/OmnipathR/a7b21d9d80a3837a50268df16d168128fc1c6ede-1.rds`.
+[2023-12-01 15:13:05] [INFO]    [OmnipathR] Loaded from cache: `https://omnipathdb.org/interactions?genesymbols=yes&datasets=omnipath&organisms=9606&fields=sources,references,curation_effort&license=academic`
+[2023-12-01 15:13:07] [SUCCESS] [OmnipathR] Loaded 81529 interactions from cache.
+[2023-12-01 15:26:21] [TRACE]   [OmnipathR] BioMart query: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Query>
+<Query  virtualSchemaName="default" formatter="TSV" header="0" uniqueRows="0" count="" datasetConfigVersion="0.6" completionStamp="1" >
+    <Dataset name="hsapiens_gene_ensembl" interface="default" >
+        <Attribute name="ensembl_peptide_id"/>
+        <Attribute name="ensembl_gene_id"/>
+        <Attribute name="external_gene_name"/>
+    </Dataset>
+</Query>
+[2023-12-01 15:26:21] [TRACE]   [OmnipathR] Looking up in cache: `http://www.ensembl.org/biomart/martservice?query=%3C?xml%20version=%221.0%22%20encoding=%22UTF-8%22?%3E%0A%3C!DOCTYPE%20Query%3E%0A%3CQuery%20%20virtualSchemaName=%22default%22%20formatter=%22TSV%22%20header=%220%22%20uniqueRows=%220%22%20count=%22%22%20datasetConfigVersion=%220.6%22%20completionStamp=%221%22%20%3E%0A%20%20%20%20%3CDataset%20name=%22hsapiens_gene_ensembl%22%20interface=%22default%22%20%3E%0A%20%20%20%20%20%20%20%20%3CAttribute%20name=%22ensembl_peptide_id%22/%3E%0A%20%20%20%20%20%20%20%20%3CAttribute%20name=%22ensembl_gene_id%22/%3E%0A%20%20%20%20%20%20%20%20%3CAttribute%20name=%22external_gene_name%22/%3E%0A%20%20%20%20%3C/Dataset%3E%0A%3C/Query%3E%0A`.
+[2023-12-01 15:26:21] [TRACE]   [OmnipathR] Loaded data from RDS `/home/dmananesc/.cache/OmnipathR/e874bc2d349448f4f9ce16f47b9a698d692bb046-1.rds`.
+[2023-12-01 15:26:21] [SUCCESS] [OmnipathR] www.ensembl.org: loaded 276950 records from cache
+[2023-12-01 15:26:41] [TRACE]   [OmnipathR] BioMart query: <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Query>
+<Query  virtualSchemaName="default" formatter="TSV" header="0" uniqueRows="0" count="" datasetConfigVersion="0.6" completionStamp="1" >
+    <Dataset name="hsapiens_gene_ensembl" interface="default" >
+        <Attribute name="ensembl_peptide_id"/>
+        <Attribute name="ensembl_gene_id"/>
+        <Attribute name="external_gene_name"/>
+    </Dataset>
+</Query>
+[2023-12-01 15:26:41] [TRACE]   [OmnipathR] Looking up in cache: `http://www.ensembl.org/biomart/martservice?query=%3C?xml%20version=%221.0%22%20encoding=%22UTF-8%22?%3E%0A%3C!DOCTYPE%20Query%3E%0A%3CQuery%20%20virtualSchemaName=%22default%22%20formatter=%22TSV%22%20header=%220%22%20uniqueRows=%220%22%20count=%22%22%20datasetConfigVersion=%220.6%22%20completionStamp=%221%22%20%3E%0A%20%20%20%20%3CDataset%20name=%22hsapiens_gene_ensembl%22%20interface=%22default%22%20%3E%0A%20%20%20%20%20%20%20%20%3CAttribute%20name=%22ensembl_peptide_id%22/%3E%0A%20%20%20%20%20%20%20%20%3CAttribute%20name=%22ensembl_gene_id%22/%3E%0A%20%20%20%20%20%20%20%20%3CAttribute%20name=%22external_gene_name%22/%3E%0A%20%20%20%20%3C/Dataset%3E%0A%3C/Query%3E%0A`.
+[2023-12-01 15:26:41] [TRACE]   [OmnipathR] Loaded data from RDS `/home/dmananesc/.cache/OmnipathR/e874bc2d349448f4f9ce16f47b9a698d692bb046-1.rds`.
+[2023-12-01 15:26:41] [SUCCESS] [OmnipathR] www.ensembl.org: loaded 276950 records from cache
+[2023-12-01 15:26:45] [TRACE]   [OmnipathR] Looking up in cache: `https://omnipathdb.org/interactions?genesymbols=yes&datasets=omnipath&organisms=9606&fields=sources,references,curation_effort&license=academic`
+[2023-12-01 15:26:45] [TRACE]   [OmnipathR] Loaded data from RDS `/home/dmananesc/.cache/OmnipathR/a7b21d9d80a3837a50268df16d168128fc1c6ede-1.rds`.
+[2023-12-01 15:26:45] [INFO]    [OmnipathR] Loaded from cache: `https://omnipathdb.org/interactions?genesymbols=yes&datasets=omnipath&organisms=9606&fields=sources,references,curation_effort&license=academic`
+[2023-12-01 15:26:47] [SUCCESS] [OmnipathR] Loaded 81529 interactions from cache.
