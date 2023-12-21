@@ -1,0 +1,192 @@
+---
+title: "01 - Basic analysis with COSMOS: comparing old and new PKN for human"
+date: "2023-12-20"
+output:
+  html_document:
+    theme: "cerulean"
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+suppressMessages(library("dplyr"))
+suppressMessages(library("ggplot2"))
+suppressMessages(library("cosmosR"))
+suppressMessages(library("readr"))
+suppressMessages(library("ggvenn"))
+suppressMessages(library("ComplexHeatmap"))
+
+projectPath <- here::here()
+outputPath <- file.path(projectPath, "output")
+reportsPath <- file.path(projectPath, "reports/01-Comparing-PKNs-COSMOS")
+
+knitr::opts_chunk$set(
+  echo = TRUE,
+  fig.align = "center",
+  fig.path = paste0(reportsPath, "/plots/"),
+  fig.pos = "H",
+  message = TRUE,
+  warning = FALSE,
+  comment = NA,
+  dev = c("png")
+)
+```
+
+
+# Comparing results
+
+## `maximum_network_depth = 4`
+
+```{r}
+old_test_result_for_4 <- readRDS(file.path(outputPath, "old_PKN_formatted_res_for_4.rds"))
+new_test_result_for_4 <- readRDS(file.path(outputPath, "new_PKN_formatted_res_for_4.rds"))
+```
+
+```{r}
+new_full_sif <- new_test_result_for_4[[1]][new_test_result_for_4[[1]]$Weight>0,]
+new_full_attributes <- as.data.frame(new_test_result_for_4[[2]])
+
+new_full_sif <- unique(new_full_sif)
+new_full_attributes <- unique(new_full_attributes)
+```
+
+```{r}
+old_full_sif <- old_test_result_for_4[[1]][old_test_result_for_4[[1]]$Weight>0,]
+old_full_attributes <- as.data.frame(old_test_result_for_4[[2]])
+
+old_full_sif <- unique(old_full_sif)
+old_full_attributes <- unique(old_full_attributes)
+```
+
+```{r}
+pairs.old.4 <- old_full_sif[, c(1, 3)] %>% mutate(mix = paste(Node1, Node2, sep = "_")) %>% pull(mix)
+pairs.new.4 <- new_full_sif[, c(1, 3)] %>% mutate(mix = paste(Node1, Node2, sep = "_")) %>% pull(mix)
+```
+
+```{r}
+length(pairs.new.4)
+length(pairs.old.4)
+```
+
+```{r}
+sum(pairs.new.4 %in% pairs.old.4)
+sum(pairs.old.4 %in% pairs.new.4)
+```
+
+```{r}
+display_node_neighboorhood(
+  central_node = 'Metab__Nitric oxide_c', 
+  sif = new_full_sif, 
+  att = new_full_attributes, 
+  n = 7
+)
+```
+
+```{r}
+display_node_neighboorhood(
+  central_node = 'Metab__Nitric oxide_c', 
+  sif = old_full_sif, 
+  att = old_full_attributes, 
+  n = 7
+)
+```
+
+
+
+## `maximum_network_depth = 3`
+
+```{r}
+old_test_result_for_3 <- readRDS(file.path(outputPath, "old_PKN_formatted_res_for_3.rds"))
+new_test_result_for_3 <- readRDS(file.path(outputPath, "new_PKN_formatted_res_for_3.rds"))
+```
+
+```{r}
+new_full_sif <- new_test_result_for_3[[1]][new_test_result_for_3[[1]]$Weight>0,]
+new_full_attributes <- as.data.frame(new_test_result_for_3[[2]])
+
+new_full_sif <- unique(new_full_sif)
+new_full_attributes <- unique(new_full_attributes)
+```
+
+```{r}
+old_full_sif <- old_test_result_for_3[[1]][old_test_result_for_3[[1]]$Weight>0,]
+old_full_attributes <- as.data.frame(old_test_result_for_3[[2]])
+
+old_full_sif <- unique(old_full_sif)
+old_full_attributes <- unique(old_full_attributes)
+```
+
+```{r}
+pairs.old.3 <- old_full_sif[, c(1, 3)] %>% mutate(mix = paste(Node1, Node2, sep = "_")) %>% pull(mix)
+pairs.new.3 <- new_full_sif[, c(1, 3)] %>% mutate(mix = paste(Node1, Node2, sep = "_")) %>% pull(mix)
+```
+
+```{r}
+length(pairs.new.3)
+length(pairs.old.3)
+```
+
+```{r}
+sum(pairs.new.3 %in% pairs.old.3)
+sum(pairs.old.3 %in% pairs.new.3)
+```
+
+```{r}
+display_node_neighboorhood(
+  central_node = 'Metab__Nitric oxide_c', 
+  sif = new_full_sif, 
+  att = new_full_attributes, 
+  n = 7
+)
+```
+
+```{r}
+display_node_neighboorhood(
+  central_node = 'Metab__Nitric oxide_c', 
+  sif = old_full_sif, 
+  att = old_full_attributes, 
+  n = 7
+)
+```
+
+
+```{r}
+pairs.list <-list(
+  old.PKN_depth.3 = pairs.old.3,
+  new.PKN_depth.3 = pairs.new.3,
+  old.PKN_depth.4 = pairs.old.4,
+  new.PKN_depth.4 = pairs.new.4
+)
+ggvenn(pairs.list)
+```
+
+```{r, fig.height=3, fig.width=7}
+m <- make_comb_mat(pairs.list)
+set_order = order(set_size(m), decreasing = FALSE)
+UpSet(
+  m, 
+  comb_col = "#0d8c4a",
+  pt_size = unit(3, "mm"), 
+  lwd = 2,
+  bg_col = "#f0f5f7",
+  bg_pt_col = "#CCCCCC",
+  # left_annotation = NULL,
+  right_annotation = upset_right_annotation(m, gp = gpar(fill = "#0d8c4a")),
+  # row_names_side = "right",
+  # comb_col = c(rep("#9e9a7d", 12), color.cat),
+  # top_annotation = HeatmapAnnotation(
+  #    "Intersection size" = anno_barplot(
+  #        comb_size(m2),
+  #        border = FALSE,
+  #        height = unit(3, "cm"),
+  #        gp = gpar(fill = c(rep("#9e9a7d", 12), color.cat)),
+  #        axis_param = list(side = "left")
+  #    ),
+  #    annotation_name_side = "left" 
+  # )
+)
+```
+
+

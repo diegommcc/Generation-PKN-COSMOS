@@ -1,5 +1,6 @@
 ################################################################################
-## Description: set of functions to generate COSMOS PKN for different organisms 
+## Description: set of functions to generate COSMOS PKN for different organisms
+# it requires the files already downloaded
 ## using OmnipathR, GSMM and STITCH resources. 
 ## Author: Diego Mañanes
 ## Date: 23/11/16
