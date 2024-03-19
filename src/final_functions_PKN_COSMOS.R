@@ -27,6 +27,7 @@ create_PKN_COSMOS <- function(
   biomart.use.omnipath = TRUE,
   GSMM.reactions.map.col = "rxns", 
   GSMM.metabolites.map.col = "mets",
+  clear_omnipath_cache = F,
   GSMM.list.params = list(
     stoich.name = "S",
     reaction.name = "grRules",
@@ -37,7 +38,7 @@ create_PKN_COSMOS <- function(
     metabolites.ID.name = "mets",
     metabolites.names.name = "metNames",
     metabolites.fomulas.name = "metFormulas",
-    metabolites.inchi.name = "inchis" 
+    metabolites.inchi.name = "inchis"
   ),
   GSMM.degree.mets.threshold = 400,
   stitch.threshold = 700,
@@ -82,7 +83,7 @@ create_PKN_COSMOS <- function(
   }
   ## Omnipath data
   if (verbose) message("\n>>> Getting Omnipath PKN...\n")
-  omnipath.PKN <- .retrievingOmnipath(organism)
+  omnipath.PKN <- .retrievingOmnipath(organism, clear_omnipath_cache = clear_omnipath_cache)
   ## Getting GSSM PKN
   if (verbose) message("\n>>> Getting GSMM PKN...\n")
   gsmm.PKN.list <- .create_GSMM_basal_PKN(

@@ -32,7 +32,8 @@ cosmos.pkn.hs <- create_PKN_COSMOS(
   GSMM.metabolites.map = metabolites.map.hs,
   translate.genes = TRUE,
   stitch.actions.file = file.path(projectPath, "data/Human-PKN/9606.actions.v5.0.tsv"), 
-  stitch.links.file = file.path(projectPath, "data/Human-PKN/9606.protein_chemical.links.detailed.v5.0.tsv")
+  stitch.links.file = file.path(projectPath, "data/Human-PKN/9606.protein_chemical.links.detailed.v5.0.tsv"), 
+  clear_omnipath_cache = T
 )
 saveRDS(cosmos.pkn.hs, file.path(projectPath, "output/COSMOS.PKN.hs.9606.rds"))
 
