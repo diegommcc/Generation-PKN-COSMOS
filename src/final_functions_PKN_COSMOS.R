@@ -144,8 +144,13 @@ create_PKN_COSMOS <- function(
 
 ## retrieving PKN info from omnipathR
 .retrievingOmnipath <- function(
-    organism = 9606
+    organism = 9606,
+    clear_omnipath_cache = F
 ) {
+  if(clear_omnipath_cache)
+  {
+    OmnipathR::omnipath_cache_remove()
+  }
   full_pkn_mm <- as.data.frame(import_omnipath_interactions(organism = organism))
   full_pkn_mm <- full_pkn_mm[!is.na(full_pkn_mm$references),]
   clean_PKN_mm <- full_pkn_mm[
