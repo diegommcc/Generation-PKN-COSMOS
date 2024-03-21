@@ -27,6 +27,7 @@ create_PKN_COSMOS <- function(
   biomart.use.omnipath = TRUE,
   GSMM.reactions.map.col = "rxns", 
   GSMM.metabolites.map.col = "mets",
+  clear_omnipath_cache = F,
   GSMM.list.params = list(
     stoich.name = "S",
     reaction.name = "grRules",
@@ -37,7 +38,7 @@ create_PKN_COSMOS <- function(
     metabolites.ID.name = "mets",
     metabolites.names.name = "metNames",
     metabolites.fomulas.name = "metFormulas",
-    metabolites.inchi.name = "inchis" 
+    metabolites.inchi.name = "inchis"
   ),
   GSMM.degree.mets.threshold = 400,
   stitch.threshold = 700,
@@ -82,7 +83,7 @@ create_PKN_COSMOS <- function(
   }
   ## Omnipath data
   if (verbose) message("\n>>> Getting Omnipath PKN...\n")
-  omnipath.PKN <- .retrievingOmnipath(organism)
+  omnipath.PKN <- .retrievingOmnipath(organism, clear_omnipath_cache = clear_omnipath_cache)
   ## Getting GSSM PKN
   if (verbose) message("\n>>> Getting GSMM PKN...\n")
   gsmm.PKN.list <- .create_GSMM_basal_PKN(
@@ -144,8 +145,13 @@ create_PKN_COSMOS <- function(
 
 ## retrieving PKN info from omnipathR
 .retrievingOmnipath <- function(
-    organism = 9606
+    organism = 9606,
+    clear_omnipath_cache = F
 ) {
+  if(clear_omnipath_cache)
+  {
+    OmnipathR::omnipath_cache_remove()
+  }
   full_pkn_mm <- as.data.frame(import_omnipath_interactions(organism = organism))
   full_pkn_mm <- full_pkn_mm[!is.na(full_pkn_mm$references),]
   clean_PKN_mm <- full_pkn_mm[
