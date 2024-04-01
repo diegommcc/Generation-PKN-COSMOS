@@ -645,7 +645,7 @@ create_PKN_COSMOS <- function(
   
   if (verbose) message("\t>>> Step 2: Defining reverse reactions")
   
-  new_df_reverse <- sapply(
+  new_df_reverse_list <- sapply(
     X = enzyme_reacs_reverse, 
     FUN = function(enzyme_reac_reverse, reaction.network) {
       df <- reaction.network[which(
@@ -678,7 +678,7 @@ create_PKN_COSMOS <- function(
       }
     }, reaction.network = reaction.network
   ) 
-  new_df_reverse <- as.data.frame(do.call(rbind, new_df_list))
+  new_df_reverse <- as.data.frame(do.call(rbind, new_df_reverse_list))
   reaction.network.new <- as.data.frame(rbind(new_df, new_df_reverse))
   reaction.network.new <- reaction.network.new[complete.cases(reaction.network.new),]
   ## filter metabolites in mapping mets
@@ -701,7 +701,7 @@ create_PKN_COSMOS <- function(
   )
 }
 
-.connecting_GSMM_omnipath <- function(
+.format_GSMM_COSMOS.connecting_GSMM_omnipath <- function(
   GSMM.PKN, 
   omnipath.PKN, 
   verbose = TRUE  
