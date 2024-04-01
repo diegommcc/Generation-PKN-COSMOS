@@ -1,9 +1,8 @@
 ################################################################################
 ## Description: set of functions to generate COSMOS PKN for different organisms
-# it requires the files already downloaded
-## using OmnipathR, GSMM and STITCH resources. 
+## OmnipathR, GSMM and STITCH resources. 
 ## Author: Diego Mañanes
-## Date: 23/11/16
+## Date: 24/03/28
 ################################################################################
 
 ## set of dependencies
@@ -27,7 +26,7 @@ create_PKN_COSMOS <- function(
   biomart.use.omnipath = TRUE,
   GSMM.reactions.map.col = "rxns", 
   GSMM.metabolites.map.col = "mets",
-  clear_omnipath_cache = F,
+  clear_omnipath_cache = FALSE,
   GSMM.list.params = list(
     stoich.name = "S",
     reaction.name = "grRules",
@@ -83,7 +82,9 @@ create_PKN_COSMOS <- function(
   }
   ## Omnipath data
   if (verbose) message("\n>>> Getting Omnipath PKN...\n")
-  omnipath.PKN <- .retrievingOmnipath(organism, clear_omnipath_cache = clear_omnipath_cache)
+  omnipath.PKN <- .retrievingOmnipath(
+    organism, clear_omnipath_cache = clear_omnipath_cache
+  )
   ## Getting GSSM PKN
   if (verbose) message("\n>>> Getting GSMM PKN...\n")
   gsmm.PKN.list <- .create_GSMM_basal_PKN(
@@ -120,15 +121,7 @@ create_PKN_COSMOS <- function(
     omnipath.PKN = omnipath.PKN, 
     stitch.PKN = stitch.PKN
   )
-  # if (dim(output.final)[[1]][1] == 0) {
-  #   stop(
-  #     paste(
-  #       "Output incorrectly generated. This might happen when the used",  
-  #       "gene ontology by GSMM and OmnipathR/STITCH is not the same. Check",  
-  #       "translate.genes parameter"
-  #     )
-  #   )
-  # }
+  
   if (verbose) message("\nDONE")
   
   return(
@@ -140,7 +133,6 @@ create_PKN_COSMOS <- function(
     )
   )
 }
-
 
 
 ## retrieving PKN info from omnipathR
@@ -260,7 +252,7 @@ create_PKN_COSMOS <- function(
   reversible <- ifelse(
     mat.object[[which(attribs.mat == list.params.GSMM$rev.name)]] == 1, 
     TRUE, FALSE
-  )
+  ) %>% as.logical()
   reaction.ids <- unlist(
     mat.object[[which(attribs.mat == list.params.GSMM$reaction.ID.name)]]
   )
@@ -272,9 +264,11 @@ create_PKN_COSMOS <- function(
       if (length(genes.reac) != 0) {
         genes <- unique(
           gsub(
-            " and ", "_", 
+            " and ", "_",
+            ## TODO: ask about these two gsub calls (_AT[0-9] and [()]): what 
+            # are they intendeed to?? I guess it only works for SYMBOL genes
             gsub(
-              "[()]","", 
+              "[()]", "", 
               gsub("_AT[0-9]+","", strsplit(genes.reac, split = " or ")[[1]])
             )
           )
@@ -303,7 +297,6 @@ create_PKN_COSMOS <- function(
     reaction.to.genes.df[orphan.reacts, "Reaction.ID"]
   )
   reaction.to.genes.df <- unique(reaction.to.genes.df)
-  
   
   ##############################################################################
   ## metabolites
@@ -337,6 +330,7 @@ create_PKN_COSMOS <- function(
     Metabolite.Inchi = metabolites.inchi
   )
   metabolites.map[metabolites.map == ""] <- NA
+  
   ##############################################################################
   ## SIF file: PKN
   if (verbose) message("\n>>> Generating PKN")
@@ -353,7 +347,7 @@ create_PKN_COSMOS <- function(
     )
     # get the enzymes associated with reaction
     genes <- reaction.to.genes.df.reac[reaction.to.genes.df.reac$Reaction == reac.idx, 1]
-    if (as.vector(lbs[reac.idx, 4] == "forward")) {
+    if (as.character(lbs[reac.idx, 4]) == "forward") {
       reactants <- metabolites.IDs[reaction == -1]
       products <- metabolites.IDs[reaction == 1]
     } else {
@@ -404,6 +398,7 @@ create_PKN_COSMOS <- function(
                                          reaction.df.all$target != "Metab__",]
   ## only complete cases
   reaction.df.all <- reaction.df.all[complete.cases(reaction.df.all),]
+  
   ##############################################################################
   ## removing cofactors (metabolites with a high degree)
   metabs.degree <- sort(
@@ -449,7 +444,9 @@ create_PKN_COSMOS <- function(
 }
 
 ## only works for those mapping dfs from the ddbb
-.mets_to_HMDB <- function(list.network) {
+.mets_to_HMDB <- function(
+    list.network  
+) {
   metab.map <- list.network[[2]]
   list.network[[1]] <- list.network[[1]] %>% mutate(
     source = case_when(
@@ -500,6 +497,7 @@ create_PKN_COSMOS <- function(
   )
 }
 
+
 .genes_to_symbol <- function(
     list.network, 
     organism, 
@@ -520,6 +518,7 @@ create_PKN_COSMOS <- function(
     stop("Chosen organism is not recognizable")
   
   regex <- "(Gene\\d+__)|(_reverse)"
+  regex.reverse <- "_reverse"
   ## getting biomart info
   genes.GSMM <- grep("Gene\\d+__", unlist(list.network[[1]]), value = TRUE) %>% 
     gsub(regex, "", .) %>% 
@@ -541,70 +540,39 @@ create_PKN_COSMOS <- function(
       ) 
     rownames(ensembl.df) <- ensembl.df[[ont.from]]
   }
-  ## translating genes when possible (not found genes are not removed)
-  ## when complexes are present (several genes concatenated), this code does not work
-  list.network[[1]] <- list.network[[1]] %>% mutate(
-    source = case_when(
-      ## cases with a single gene
-      grepl("Gene\\d+__", source) ~ case_when(
-        !is.na(
-          ensembl.df[gsub(regex, replacement = "", x = source), ont.to]
-        ) ~ paste0(
-          "Gene", 
-          gsub("\\D", "", sapply(strsplit(x = source, split = "__"), \(x) x[1])), 
-          "__", 
-          ensembl.df[gsub(regex, replacement = "", x = source), ont.to]
-        ), 
-        ## cases with complexes: more than 1 gene
-        grepl("[0-9]_[E]", source) ~ 
-          paste0(
-            "Gene", 
-            gsub("\\D", "", sapply(strsplit(x = target, split = "__"), \(x) x[1])), 
-            "__",
-            unlist(
-              strsplit(
-                gsub(
-                  pattern = "reverse", replacement = "", 
-                  grep("[0-9]_[E]", source, value = T)[1]
-                ), 
-                split = "_"
-              )
-            )[-c(1:2)] %>% ensembl.df[., ont.to] %>% paste(collapse = "_")
-          ),
-        TRUE ~ source
-      ), TRUE ~ source
-    ),
-    target = case_when(
-      ## cases with a single gene
-      grepl("Gene\\d+__", target) ~ case_when(
-        !is.na(
-          ensembl.df[gsub(regex, replacement = "", x = target), ont.to]
-        ) ~ paste0(
-          "Gene", 
-          gsub("\\D", "", sapply(strsplit(x = target, split = "__"), \(x) x[1])), 
-          "__", 
-          ensembl.df[gsub(regex, replacement = "", x = target), ont.to]
-        ), 
-        ## cases with complexes: more than 1 gene
-        grepl("[0-9]_[E]", target) ~ 
-          paste0(
-            "Gene", 
-            gsub("\\D", "", sapply(strsplit(x = target, split = "__"), \(x) x[1])), 
-            "__",
-            unlist(
-              strsplit(
-                gsub(
-                  pattern = "reverse", replacement = "", 
-                  grep("[0-9]_[E]", target, value = T)[1]
-                ), 
-                split = "_"
-              )
-            )[-c(1:2)] %>% ensembl.df[., ont.to] %>% paste(collapse = "_")
-          ),
-        TRUE ~ target
-      ), TRUE ~ target
+  ## translating genes when possible (genes not found are not removed but kept 
+  # with ENSEMBL IDs)
+  genes.logical <- data.frame(
+    source = grepl("Gene\\d+__", list.network[[1]]$source),
+    target = grepl("Gene\\d+__", list.network[[1]]$target)
+  ) %>% as.matrix()
+  ## modifying the matrix in place seems to be faster than dplyr code / check 
+  # checking_functions_COSMOS.R file in case I need to come back
+  list.network[[1]] <- as.matrix(list.network[[1]])
+  for (i in seq(nrow(list.network[[1]]))) {
+    gene <- list.network[[1]][i, ][genes.logical[i, ]]
+    new.character <- paste0(
+      "Gene", 
+      gsub("\\D", "", sapply(strsplit(x = gene, split = "__"), \(x) x[1])), 
+      "__", 
+      gsub(regex, "", gene) %>% 
+        strsplit(x = ., split = "_") %>% 
+        sapply(
+          \(iter) {
+            ifelse(
+              test = is.na(ensembl.df[iter, ont.to]), 
+              yes = iter, 
+              no = ensembl.df[iter, ont.to]
+            ) %>% paste(collapse = "_")
+          }
+        ),
+      ifelse(grepl(regex.reverse, gene), yes = "_reverse", no = "")
     )
-  ) 
+    list.network[[1]][i, ][genes.logical[i, ]] <- new.character
+  }
+  
+  list.network[[1]] <- as.data.frame(list.network[[1]])
+  
   list.network[[3]] <- list.network[[3]] %>% mutate(
     Gene = case_when(
       !is.na(
@@ -629,7 +597,10 @@ create_PKN_COSMOS <- function(
   )
 }
 
-.format_GSMM_COSMOS <- function(list.network, verbose = TRUE) {
+.format_GSMM_COSMOS <- function(
+    list.network, 
+    verbose = TRUE
+) {
   reaction.network <- list.network[[1]]
   enzyme_reacs <- unique(c(reaction.network$source, reaction.network$target))
   enzyme_reacs <- enzyme_reacs[grepl("^Gene", enzyme_reacs)]
@@ -651,12 +622,12 @@ create_PKN_COSMOS <- function(
         if (dim(df)[1] < 3) {
           return(df)
         } else {
-          for(i in 1:dim(df)[1]) {
-            if(grepl("Metab__", df[i, 1])) {
+          for (i in 1:dim(df)[1]) {
+            if (grepl("Metab__", df[i, 1])) {
               counterpart <- which(
-                gsub("_[a-z]$","",df[,2]) == gsub("_[a-z]$","",df[i,1])
+                gsub("_[a-z]$", "", df[, 2]) == gsub("_[a-z]$", "", df[i, 1])
               )
-              if(length(counterpart) > 0) {
+              if (length(counterpart) > 0) {
                 df[i, 2] <- paste0(df[i, 2], paste0("_TRANSPORTER", i))
                 df[counterpart, 1] <- paste0(
                   df[counterpart, 1], paste0("_TRANSPORTER", i)
@@ -681,13 +652,13 @@ create_PKN_COSMOS <- function(
         reaction.network$source == enzyme_reac_reverse | 
           reaction.network$target == enzyme_reac_reverse
       ),]
-      if(dim(df)[1] < 2) {
+      if (dim(df)[1] < 2) {
         return(NA)
       } else {
-        if(dim(df)[1] < 3) {
+        if (dim(df)[1] < 3) {
           return(df)
         } else {
-          for(i in 1:dim(df)[1]) {
+          for (i in 1:dim(df)[1]) {
             if(grepl("Metab__",df[i,1])) {
               counterpart <- which(
                 gsub("_[a-z]$","",df[,2]) == gsub("_[a-z]$","",df[i,1])
@@ -863,12 +834,14 @@ create_PKN_COSMOS <- function(
   colnames(STITCH) <- c("source", "target", "sign") 
   CIDs <- unique(as.character(unlist(STITCH[,c(1,3)])))
   CIDs <- CIDs[grepl("Metab__", CIDs)] %>% gsub("Metab__", "", .)
+  
   ## Convert CID to HMDB Id when available
   metabolitesMapping.mod <- metabolitesMapping %>% 
     filter(CID %in% CIDs, !is.na(HMDB)) %>% 
     mutate(HMDB = paste0("Metab__", HMDB))
   metabolitesMapping.vec <- metabolitesMapping.mod$HMDB
   names(metabolitesMapping.vec) <- paste0("Metab__",metabolitesMapping.mod$CID)
+  
   ## metabolites with no HMDB are kept
   STITCH <- STITCH %>% mutate(
     source = case_when(
@@ -905,7 +878,7 @@ create_PKN_COSMOS <- function(
   ) %>% unique()
   meta.network <- meta.PKN[,c(1, 3, 2)]
   names(meta.network) <- c("source", "interaction", "target")
-  #TODO: manual correction: difficult to generalize for different organisms, shall I remove it? 
+  # TODO: manual correction: difficult to generalize for different organisms, shall I remove it? 
   #probably erroneous interaction (WHY?? this only works for human / mouse)
   # meta.network <- meta.network[-which(
   #   meta.network$source == "Prkca" & meta.network$target == "Src"
